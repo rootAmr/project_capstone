@@ -1,12 +1,12 @@
-const usersModel = require('../models/users');
+const foodsModel = require('../models/foods');
 
-const getAllUsers = async (req, res) =>{
+const getAllFood = async (req, res) =>{
 
     try {
-        const [data] = await usersModel.getAllUsers();
+        const [data] = await foodsModel.getAllFood();
     
         res.json({
-            message: 'get all users success',
+            message: 'get all food success',
             data: data
         })
     } catch (error) {
@@ -18,12 +18,12 @@ const getAllUsers = async (req, res) =>{
 
 }
 
-const createNewUsers = async (req, res) => {
+const createNewFood = async (req, res) => {
     const {body} = req;
     try {
-        await usersModel.createNewUsers(body);
+        await foodsModel.createNewFood(body);
         res.status(201).json({
-            message: 'create new user success',
+            message: 'create new food success',
             data: body
         });
     } catch (error) {
@@ -34,16 +34,16 @@ const createNewUsers = async (req, res) => {
     }
 }
 
-const updateUsers = async (req, res) =>{
-    const {idUsers} = req.params;
+const updateFood = async (req, res) =>{
+    const {idFood} = req.params;
     const {body} = req;
 
     try {
-        await usersModel.updateUsers(body, idUsers);
+        await foodsModel.updateFood(body, idFood);
         res.status(201).json({
-            message: 'Update User Berhasil',
+            message: 'Update Food Success',
             data: {
-                id: idUsers,
+                id: idFood,
                 ...body
             },
         })
@@ -55,12 +55,12 @@ const updateUsers = async (req, res) =>{
     }
 }
 
-const deleteUsers = async (req, res) =>{
-    const {idUsers} = req.params;
+const deleteFood = async (req, res) =>{
+    const {idFood} = req.params;
     try {
-        await usersModel.deleteUsers(idUsers);
+        await foodsModel.deleteFood(idFood);
         res.json({
-            message: 'delete user success',
+            message: 'delete Food success',
         })
     } catch (error) {
         res.status(500).json({
@@ -71,8 +71,8 @@ const deleteUsers = async (req, res) =>{
 }
 
 module.exports = {
-    getAllUsers,
-    createNewUsers,
-    updateUsers,
-    deleteUsers,
+    getAllFood,
+    createNewFood,
+    updateFood,
+    deleteFood
 }
