@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="-20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_main"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_back_white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Nasi padang uda sayang"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="40dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    app:cardCornerRadius="20dp"
+                    android:background="@drawable/button_background"
+                    android:outlineAmbientShadowColor="@color/red1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/example"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="-20dp"
+        android:elevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginHorizontal="30dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="0dp"
+
+            android:background="@drawable/bg_transparent">
+
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="27dp"
+                android:layout_margin="15dp"
+                android:src="@drawable/addfavorite_toggle" />
+        </androidx.cardview.widget.CardView>
+            </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bahan-bahan"
+            android:fontFamily="@font/poppins"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250 gr daging ayam (saya pakai fillet)--Secukupnya gula dan garam--50-100 gr tepung ayam serbaguna--Secukupnya lalapan (kemangi,kol,timun)--Secukupnya minyak panas-- sambal korek--Secukupnya cabe rawit merah dan bwg putih--"
+            android:fontFamily="@font/poppins"
+            android:textSize="12dp"
+            android:justificationMode="inter_word"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cara memasak"
+            android:fontFamily="@font/poppins"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goreng ayam seperti ayam krispi--Ulek semua bahan sambal kemudian campur dengan minyak panas bekas goreng ayam--Geprek ayam kemudian campur dengan sambal,sajikan dengan lalapan  --"
+            android:fontFamily="@font/poppins"
+            android:textSize="12dp"
+            android:justificationMode="inter_word"/>
+    </LinearLayout>
+
+</LinearLayout>
