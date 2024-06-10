@@ -7,15 +7,15 @@ const getAllFood = () =>{
 }
 
 const createNewFood = (body) =>{
-    const SQLQuery = `  INSERT INTO foods (foodName, recipe, image) 
-                        VALUES('${body.foodName}','${body.recipe}','${body.image}')`;
+    const SQLQuery = `  INSERT INTO foods (foodName, ingredients, steps, category, url, image, rating) 
+                        VALUES('${body.foodName}','${body.ingredients}','${body.steps}','${body.category}','${body.url}','${body.image}','${body.rating}')`;
     
     return pool.execute(SQLQuery); 
 }
 
 const updateFood = (body, idFood) =>{
     const SQLQuery = `UPDATE foods
-                        SET foodName='${body.foodName}', recipe='${body.recipe}',image='${body.image}'
+                        SET foodName='${body.foodName}', ingredients='${body.ingredients}', steps='${body.steps}', category='${body.category}', url='${body.url}',image='${body.image}', rating='${body.rating}'
                         WHERE id=${idFood}`;
 
     return pool.execute(SQLQuery); 
