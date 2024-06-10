@@ -4,6 +4,7 @@ const express = require('express');
 const usersRoutes = require('./routes/users');
 const foodsRoutes = require('./routes/foods');
 const commentsRoutes = require('./routes/comment');
+const ratingsRoutes = require('./routes/ratings');
 const middlewareLogRequest = require('./middleware/logs');
 
 
@@ -18,6 +19,8 @@ app.use('/users', usersRoutes);
 app.use('/foods', foodsRoutes);
 
 app.use('/comments', commentsRoutes);
+
+app.use('/ratings', ratingsRoutes);
 
 app.listen(PORT, () => {
     console.log(`SERVER BERJALAN DI PORT ${PORT}`);
