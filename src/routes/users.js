@@ -4,7 +4,7 @@ const userController = require('../controller/users');
 
 const router = express.Router();
 
-//CREATE - POST
+// CREATE - POST
 router.post('/', userController.createNewUsers);
 
 // READ - GET
@@ -15,5 +15,11 @@ router.patch('/:idUsers', userController.updateUsers);
 
 // DELETE - DELETE
 router.delete('/:idUsers', userController.deleteUsers);
+
+// LOGIN - POST
+router.post('/login', userController.loginUser);
+
+// REGISTER - POST
+router.post('/register', userController.registerUser);
 
 module.exports = router;
