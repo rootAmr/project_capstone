@@ -25,7 +25,7 @@ const createNewRating = (body) => {
         })
         .catch(error => {
             // Tangani kesalahan, misalnya kembalikan pesan kesalahan
-            return Promise.reject(error);
+            return Promise.reject("You have already rate it");
         });
 }
 
