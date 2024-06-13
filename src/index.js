@@ -7,6 +7,7 @@ const commentsRoutes = require('./routes/comment');
 const ratingsRoutes = require('./routes/ratings');
 const bookmarksRoutes = require('./routes/bookmarks');
 const middlewareLogRequest = require('./middleware/logs');
+const { authenticateToken } = require('./middleware/auth');
 
 
 const app = express();
@@ -15,15 +16,15 @@ app.use(middlewareLogRequest);
 
 app.use(express.json());
 
-app.use('/users', usersRoutes);
+// app.use('/users', usersRoutes);
 
-app.use('/foods', foodsRoutes);
+app.use('/foods', authenticateToken, foodsRoutes);
 
-app.use('/comments', commentsRoutes);
+app.use('/comments', authenticateToken, commentsRoutes);
 
-app.use('/ratings', ratingsRoutes);
+app.use('/ratings', authenticateToken, ratingsRoutes);
 
-app.use('/bookmarks', bookmarksRoutes);
+app.use('/bookmarks', authenticateToken, bookmarksRoutes);
 
 app.listen(PORT, () => {
     console.log(`SERVER BERJALAN DI PORT ${PORT}`);

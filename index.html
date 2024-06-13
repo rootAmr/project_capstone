@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase Auth Example</title>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        signInWithPopup,
+        GoogleAuthProvider,
+      } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+  apiKey: "AIzaSyAIm9uMmBnYeOwuLMjvBN5P44nglfrNbz4",
+  authDomain: "food-mood-capstone.firebaseapp.com",
+  projectId: "food-mood-capstone",
+  storageBucket: "food-mood-capstone.appspot.com",
+  messagingSenderId: "908454400659",
+  appId: "1:908454400659:web:9fee5cb1834f68b2553366",
+  measurementId: "G-2CNTGPQRX1"
+};
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const googleProvider = new GoogleAuthProvider();
+
+      // Sign in with email/password function
+      async function signInWithEmailPassword() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        try {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const idToken = await userCredential.user.getIdToken();
+          console.log("ID Token:", idToken);
+          alert("ID Token: " + idToken);
+        } catch (error) {
+          console.error("Error signing in with email/password:", error);
+          alert("Error signing in with email/password: " + error.message);
+        }
+      }
+
+      // Sign in with Google function
+      async function signInWithGoogle() {
+        try {
+          const userCredential = await signInWithPopup(auth, googleProvider);
+          const idToken = await userCredential.user.getIdToken();
+          console.log("ID Token:", idToken);
+          alert("ID Token: " + idToken);
+        } catch (error) {
+          console.error("Error signing in with Google:", error);
+          alert("Error signing in with Google: " + error.message);
+        }
+      }
+
+      // Function to check ID token again
+      async function checkIdTokenAgain() {
+        try {
+          const user = auth.currentUser;
+          if (user) {
+            const idToken = await user.getIdToken();
+            console.log("ID Token:", idToken);
+            alert("ID Token: " + idToken);
+          } else {
+            alert("User not signed in.");
+          }
+        } catch (error) {
+          console.error("Error checking ID token again:", error);
+          alert("Error checking ID token again: " + error.message);
+        }
+      }
+
+      // Attach signIn functions to the window object
+      window.signInWithEmailPassword = signInWithEmailPassword;
+      window.signInWithGoogle = signInWithGoogle;
+      window.checkIdTokenAgain = checkIdTokenAgain;
+    </script>
+  </head>
+  <body>
+    <h1>Firebase Auth Example</h1>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signInWithEmailPassword()">Login with Email/Password</button>
+    <button onclick="signInWithGoogle()">Sign In with Google</button>
+    <button onclick="checkIdTokenAgain()">Check ID Token Again</button>
+  </body>
+</html>

@@ -1,42 +1,41 @@
 const commentsModel = require('../models/comments');
 
-const getAllComment = async (req, res) =>{
-
+const getAllComment = async (req, res) => {
     try {
-        const [data] = await commentsModel.getAllComment();
-    
+        const data = await commentsModel.getAllComment();
         res.json({
             message: 'get all Comment success',
             data: data
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: 'server error',
-            serverMessage: error,
-        })
-    }
-
-}
-
-const createNewComment = async (req, res) => {
-    const {body} = req;
-    try {
-        await commentsModel.createNewComment(body);
-        res.status(201).json({
-            message: 'create new Comment success',
-            data: body
         });
     } catch (error) {
         res.status(500).json({
             message: 'server error',
-            serverMessage: error,
-        })
+            serverMessage: error.message,
+        });
     }
-}
+};
 
-const updateComment = async (req, res) =>{
-    const {idComment} = req.params;
-    const {body} = req;
+const createNewComment = async (req, res) => {
+    const { body } = req;
+    const userId = req.user.user_id; // Mengambil user_id dari req.user
+
+    try {
+        const newComment = await commentsModel.createNewComment(body, userId); // Meneruskan userId ke model
+        res.status(201).json({
+            message: 'create new Comment success',
+            data: newComment
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'server error',
+            serverMessage: error.message,
+        });
+    }
+};
+
+const updateComment = async (req, res) => {
+    const { idComment } = req.params;
+    const { body } = req;
 
     try {
         await commentsModel.updateComment(body, idComment);
@@ -46,33 +45,33 @@ const updateComment = async (req, res) =>{
                 id: idComment,
                 ...body
             },
-        })
+        });
     } catch (error) {
         res.status(500).json({
             message: 'server error',
-            serverMessage: error,
-        })
+            serverMessage: error.message,
+        });
     }
-}
+};
 
-const deleteComment = async (req, res) =>{
-    const {idComment} = req.params;
+const deleteComment = async (req, res) => {
+    const { idComment } = req.params;
     try {
         await commentsModel.deleteComment(idComment);
         res.json({
             message: 'delete Comment success',
-        })
+        });
     } catch (error) {
         res.status(500).json({
             message: 'server error',
-            serverMessage: error,
-        })
+            serverMessage: error.message,
+        });
     }
-}
+};
 
 module.exports = {
     getAllComment,
     createNewComment,
     updateComment,
     deleteComment
-}
+};

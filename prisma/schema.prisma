@@ -1,0 +1,69 @@
+  // This is your Prisma schema file,
+  // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+  // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+  // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+  }
+
+model User {
+  user_id String @id
+
+  foods      Food[]
+  comments   Comment[]
+  ratings    Rating[]
+  bookmarks  Bookmark[] 
+}
+
+model Food {
+  id          Int       @id @default(autoincrement())
+  user_id     String
+  foodName    String    @db.VarChar(225)
+  ingredients String    @db.Text
+  steps       String    @db.Text
+  category    String    @db.VarChar(225)
+  url         String?   @db.VarChar(225)
+  image       String?   @db.VarChar(225)
+  rating      Int?      @db.TinyInt
+
+  user        User      @relation(fields: [user_id], references: [user_id])
+  comments    Comment[]
+  ratings     Rating[]
+  bookmarks   Bookmark[]
+}
+
+model Comment {
+  id           Int    @id @default(autoincrement())
+  user_id      String
+  food_id      Int
+  commentField String? @db.Text
+
+  user         User   @relation(fields: [user_id], references: [user_id])
+  food         Food   @relation(fields: [food_id], references: [id])
+}
+
+model Rating {
+  id      Int  @id @default(autoincrement())
+  user_id String
+  food_id Int
+  rate    Int? @db.TinyInt
+
+  user    User @relation(fields: [user_id], references: [user_id])
+  food    Food @relation(fields: [food_id], references: [id])
+}
+
+model Bookmark {
+  id      Int  @id @default(autoincrement())
+  user_id String
+  food_id Int
+
+  user    User @relation(fields: [user_id], references: [user_id])
+  food    Food @relation(fields: [food_id], references: [id])
+}

@@ -19,10 +19,4 @@ router.patch('/:idUsers', upload.single('profile'), userController.updateUsers);
 // DELETE - DELETE
 router.delete('/:idUsers', userController.deleteUsers);
 
-// LOGIN - POST
-router.post('/login', userController.loginUser);
-
-// REGISTER - POST
-router.post('/register', upload.single('profile'), userController.registerUser);
-
 module.exports = router;
