@@ -1,31 +1,37 @@
-const pool = require('../config/database');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-const getAllBookmark = () =>{
-    const SQLQuery = 'SELECT * FROM bookmarks'
-
-    return pool.execute(SQLQuery);  
+const getAllBookmark = async () => {
+    return await prisma.bookmark.findMany();
 }
 
-const createNewBookmark = (body) =>{
-    const SQLQuery = `  INSERT INTO bookmarks (user_id, food_id) 
-                        VALUES('${body.user_id}','${body.food_id}')`;
-    
-    return pool.execute(SQLQuery); 
+const createNewBookmark = async (data) => {
+    const { user_id, food_id } = data;
+
+    return await prisma.bookmark.create({
+        data: {
+            user_id: user_id,
+            food_id: food_id
+        }
+    });
 }
 
-const updateBookmark = (body, idBookmark) =>{
-    const SQLQuery = `UPDATE bookmarks
-                        SET user_id='${body.user_id}', food_id='${body.food_id}'
-                        WHERE id=${idBookmark}`;
+const updateBookmark = async (data, idBookmark) => {
+    const { user_id, food_id } = data;
 
-    return pool.execute(SQLQuery); 
+    return await prisma.bookmark.update({
+        where: { id: parseInt(idBookmark) },
+        data: {
+            user_id: user_id,
+            food_id: food_id
+        }
+    });
 }
 
-const deleteBookmark = (idBookmark) =>{
-    const SQLQuery = `DELETE FROM bookmarks
-                        WHERE id=${idBookmark}`
-
-    return pool.execute(SQLQuery);
+const deleteBookmark = async (idBookmark) => {
+    return await prisma.bookmark.delete({
+        where: { id: parseInt(idBookmark) }
+    });
 }
 
 module.exports = {

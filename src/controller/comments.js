@@ -17,10 +17,10 @@ const getAllComment = async (req, res) => {
 
 const createNewComment = async (req, res) => {
     const { body } = req;
-    const userId = req.user.user_id; // Mengambil user_id dari req.user
+    const userId = req.user.user_id;
 
     try {
-        const newComment = await commentsModel.createNewComment(body, userId); // Meneruskan userId ke model
+        const newComment = await commentsModel.createNewComment(body, userId);
         res.status(201).json({
             message: 'create new Comment success',
             data: newComment

@@ -1,39 +1,3 @@
-const { Storage } = require('@google-cloud/storage');
-const path = require('path');
-
-const storage = new Storage({
-    keyFilename: path.join(__dirname, '../../serviceAccount.json')
-});
-
-const bucket = storage.bucket('food-mood-capstone.appspot.com');
-
-const uploadFile = async (file) => {
-    return new Promise((resolve, reject) => {
-        if (!file) {
-            reject('No file provided');
-            return;
-        }
-
-        const { originalname, buffer } = file;
-
-        const blob = bucket.file(originalname.replace(/ /g, "_"));
-        const blobStream = blob.createWriteStream({
-            resumable: false
-        });
-
-        blobStream.on('finish', () => {
-            const publicUrl = `https://storage.googleapis.com/${food-mood-capstone.appspot.com}/${blob.name}`;
-            resolve(publicUrl);
-        });
-
-        blobStream.on('error', (error) => {
-            reject(`Unable to upload file: ${error}`);
-        });
-
-        blobStream.end(buffer);
-    });
-};
-
 const foodsModel = require('../models/foods');
 
 const getAllFood = async (req, res) => {
@@ -52,17 +16,10 @@ const getAllFood = async (req, res) => {
 };
 
 const createNewFood = async (req, res) => {
-    const { body, file } = req; // Assuming `file` is the uploaded file object
+    const { body } = req;
     const userId = req.user.user_id;
-
     try {
-        let imageUrl = null;
-
-        if (file) {
-            imageUrl = await uploadFile(file);
-        }
-
-        const newFood = await foodsModel.createNewFood({ ...body, imageUrl }, userId);
+        const newFood = await foodsModel.createNewFood(body, userId);
         res.status(201).json({
             message: 'create new food success',
             data: newFood
@@ -82,13 +39,13 @@ const updateFood = async (req, res) => {
 
     try {
         const updatedFood = await foodsModel.updateFood(body, parseInt(idFood), userId);
-        res.status(201).json({
-            message: 'Update Food Success',
-            data: {
-                id: idFood,
-                ...body
-            },
-        });
+            res.status(201).json({
+                message: 'Update Food Success',
+                data: {
+                    id: idFood,
+                    ...body
+                },
+            });
     } catch (error) {
         res.status(500).json({
             message: 'server error',
@@ -121,5 +78,5 @@ module.exports = {
     getAllFood,
     createNewFood,
     updateFood,
-    deleteFood,
+    deleteFood
 };
