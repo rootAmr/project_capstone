@@ -1,17 +1,20 @@
 const express = require('express');
-
+const multer = require('multer');
 const userController = require('../controller/users');
 
 const router = express.Router();
+const upload = multer({
+    storage: multer.memoryStorage()
+});
 
 // CREATE - POST
-router.post('/', userController.createNewUsers);
+router.post('/', upload.single('profile'), userController.createNewUsers);
 
 // READ - GET
 router.get('/', userController.getAllUsers);
 
 // UPDATE - PATCH
-router.patch('/:idUsers', userController.updateUsers);
+router.patch('/:idUsers', upload.single('profile'), userController.updateUsers);
 
 // DELETE - DELETE
 router.delete('/:idUsers', userController.deleteUsers);
@@ -20,6 +23,6 @@ router.delete('/:idUsers', userController.deleteUsers);
 router.post('/login', userController.loginUser);
 
 // REGISTER - POST
-router.post('/register', userController.registerUser);
+router.post('/register', upload.single('profile'), userController.registerUser);
 
 module.exports = router;

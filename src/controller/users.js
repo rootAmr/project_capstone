@@ -16,9 +16,31 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const uploadImageToGCS = async (file) => {
+    const { buffer, originalname, mimetype } = file;
+    const blob = bucket.file(`${uuidv4()}-${originalname}`);
+    const blobStream = blob.createWriteStream({
+        resumable: false,
+        contentType: mimetype,
+    });
+
+    return new Promise((resolve, reject) => {
+        blobStream.on('error', (err) => reject(err));
+        blobStream.on('finish', () => {
+            blob.makePublic().then(() => {
+                resolve(blob.publicUrl());
+            });
+        });
+        blobStream.end(buffer);
+    });
+};
+
 const createNewUsers = async (req, res) => {
-    const { body } = req;
+    const { body, file } = req;
     try {
+        if (file) {
+            body.profile = await uploadImageToGCS(file);
+        }
         await usersModel.createNewUsers(body);
         res.status(201).json({
             message: 'Create new user success',
@@ -34,8 +56,11 @@ const createNewUsers = async (req, res) => {
 
 const updateUsers = async (req, res) => {
     const { idUsers } = req.params;
-    const { body } = req;
+    const { body, file } = req;
     try {
+        if (file) {
+            body.profile = await uploadImageToGCS(file);
+        }
         await usersModel.updateUsers(body, idUsers);
         res.status(201).json({
             message: 'Update user success',
@@ -129,5 +154,6 @@ module.exports = {
     updateUsers,
     deleteUsers,
     registerUser,
-    loginUser
+    loginUser,
+    uploadImageToGCS
 }
