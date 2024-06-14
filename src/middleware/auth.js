@@ -22,7 +22,7 @@ const authenticateToken = async (req, res, next) => {
     }
   } catch (error) {
     console.error("Error authenticating token:", error);
-    res.status(403).json({ message: "Forbidden" });
+    res.status(403).json({ message: "Forbidden Bro" });
   }
 };
 

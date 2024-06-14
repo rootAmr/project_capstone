@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE `User` (
-    `user_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -8,7 +8,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Food` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `foodName` VARCHAR(225) NOT NULL,
     `ingredients` TEXT NOT NULL,
     `steps` TEXT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE `Food` (
 -- CreateTable
 CREATE TABLE `Comment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `food_id` INTEGER NOT NULL,
     `commentField` TEXT NULL,
 
@@ -33,7 +33,7 @@ CREATE TABLE `Comment` (
 -- CreateTable
 CREATE TABLE `Rating` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `food_id` INTEGER NOT NULL,
     `rate` TINYINT NULL,
 
@@ -43,7 +43,7 @@ CREATE TABLE `Rating` (
 -- CreateTable
 CREATE TABLE `Bookmark` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `food_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
