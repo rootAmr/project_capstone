@@ -27,7 +27,7 @@ const authenticateToken = async (req, res, next) => {
 };
 
 const checkOrCreateUser = async (decodedToken) => {
-  const userId = decodedToken.user_id;
+  const userId = decodedToken.uid; // Updated to use Firebase uid
   const user = await prisma.user.findUnique({
     where: { user_id: userId }
   });

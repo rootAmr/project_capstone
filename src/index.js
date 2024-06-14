@@ -1,13 +1,14 @@
 require('dotenv').config()
 const PORT = process.env.PORT || 5000;
 const express = require('express');
-const usersRoutes = require('./routes/users');
+// const usersRoutes = require('./routes/users');
 const foodsRoutes = require('./routes/foods');
 const commentsRoutes = require('./routes/comment');
 const ratingsRoutes = require('./routes/ratings');
 const bookmarksRoutes = require('./routes/bookmarks');
 const middlewareLogRequest = require('./middleware/logs');
 const { authenticateToken } = require('./middleware/auth');
+
 
 
 const app = express();

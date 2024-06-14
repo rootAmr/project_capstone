@@ -1,4 +1,5 @@
 const foodsModel = require('../models/foods');
+const uploadFileToGCS = require('../config/gcsConfig');
 
 const getAllFood = async (req, res) => {
     try {
@@ -17,7 +18,18 @@ const getAllFood = async (req, res) => {
 
 const createNewFood = async (req, res) => {
     const { body } = req;
-    const userId = req.user.user_id;
+    const userId = req.user.uid; // Updated to use Firebase uid
+    if (req.file) {
+        try {
+            const publicUrl = await uploadFileToGCS(req.file);
+            body.image = publicUrl;
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Failed to upload image to GCS',
+                serverMessage: error.message,
+            });
+        }
+    }
     try {
         const newFood = await foodsModel.createNewFood(body, userId);
         res.status(201).json({
@@ -35,17 +47,28 @@ const createNewFood = async (req, res) => {
 const updateFood = async (req, res) => {
     const { idFood } = req.params;
     const { body } = req;
-    const userId = req.user.user_id;
+    const userId = req.user.uid; // Updated to use Firebase uid
+    if (req.file) {
+        try {
+            const publicUrl = await uploadFileToGCS(req.file);
+            body.image = publicUrl;
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Failed to upload image to GCS',
+                serverMessage: error.message,
+            });
+        }
+    }
 
     try {
         const updatedFood = await foodsModel.updateFood(body, parseInt(idFood), userId);
-            res.status(201).json({
-                message: 'Update Food Success',
-                data: {
-                    id: idFood,
-                    ...body
-                },
-            });
+        res.status(201).json({
+            message: 'Update Food Success',
+            data: {
+                id: idFood,
+                ...body
+            },
+        });
     } catch (error) {
         res.status(500).json({
             message: 'server error',
@@ -56,7 +79,7 @@ const updateFood = async (req, res) => {
 
 const deleteFood = async (req, res) => {
     const { idFood } = req.params;
-    const userId = req.user.user_id;
+    const userId = req.user.uid; // Updated to use Firebase uid
     try {
         const deletedFood = await foodsModel.deleteFood(parseInt(idFood), userId);
         if (deletedFood.count === 0) {
