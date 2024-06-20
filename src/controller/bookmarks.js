@@ -13,7 +13,7 @@ const getAllBookmark = async (req, res) => {
             serverMessage: error.message,
         });
     }
-}
+};
 
 const createNewBookmark = async (req, res) => {
     const { body } = req;
@@ -30,7 +30,30 @@ const createNewBookmark = async (req, res) => {
             serverMessage: error.message,
         });
     }
-}
+};
+
+const deleteBookmark = async (req, res) => {
+    const { idBookmark } = req.params;
+    const userId = req.user.user_id; // Assuming user ID is available in req.user
+    try {
+        await bookmarksModel.deleteBookmark(userId, parseInt(idBookmark));
+        res.json({
+            message: 'Delete bookmark success',
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error',
+            serverMessage: error.message,
+        });
+    }
+};
+
+module.exports = {
+    getAllBookmark,
+    createNewBookmark,
+    deleteBookmark
+};
+
 
 const updateBookmark = async (req, res) => {
     const { idBookmark } = req.params;
@@ -49,22 +72,6 @@ const updateBookmark = async (req, res) => {
         });
     }
 }
-
-const deleteBookmark = async (req, res) => {
-    const { idBookmark } = req.params;
-    try {
-        await bookmarksModel.deleteBookmark(idBookmark);
-        res.json({
-            message: 'Delete bookmark success',
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Server error',
-            serverMessage: error.message,
-        });
-    }
-}
-
 module.exports = {
     getAllBookmark,
     createNewBookmark,

@@ -58,7 +58,7 @@ const createNewFood = async (body, userId) => {
       url: body.url,
       image: body.image,
       rating: body.rating,
-      bookmark_counts: 0,  // Default value for bookmark_counts
+      bookmark_counts: body.bookmark_counts,  
     }
   });
 }
@@ -74,6 +74,7 @@ const updateFood = async (body, idFood, userId) => {
       url: body.url,
       image: body.image,
       rating: body.rating,
+      bookmark_counts: body.bookmark_counts,
     }
   });
 }
