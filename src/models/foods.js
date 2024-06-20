@@ -5,6 +5,12 @@ const getAllFood = async () => {
   return await prisma.food.findMany();
 }
 
+const getFoodById = async (idFood) => {
+  return await prisma.food.findUnique({
+    where: { id: idFood },
+  });
+}
+
 const createNewFood = async (body, userId) => {
   return await prisma.food.create({
     data: {
@@ -43,6 +49,7 @@ const deleteFood = async (idFood, userId) => {
 
 module.exports = {
   getAllFood,
+  getFoodById, // Export the new method
   createNewFood,
   updateFood,
   deleteFood

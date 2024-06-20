@@ -16,6 +16,28 @@ const getAllFood = async (req, res) => {
     }
 };
 
+const getFoodById = async (req, res) => {
+    const { idFood } = req.params;
+    try {
+        const food = await foodsModel.getFoodById(parseInt(idFood));
+        if (food) {
+            res.json({
+                message: 'get food by id success',
+                data: food
+            });
+        } else {
+            res.status(404).json({
+                message: 'food not found'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: 'server error',
+            serverMessage: error,
+        });
+    }
+};
+
 const createNewFood = async (req, res) => {
     const { body } = req;
     const userId = req.user.uid; // Updated to use Firebase uid
@@ -99,6 +121,7 @@ const deleteFood = async (req, res) => {
 
 module.exports = {
     getAllFood,
+    getFoodById, // Export the new controller function
     createNewFood,
     updateFood,
     deleteFood

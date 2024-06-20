@@ -2,12 +2,18 @@ FROM node:21
 
 WORKDIR /app
 
-COPY package*.json ./
+ENV PORT 8080
 
-RUN npm install
+ENV GOOGLE_APPLICATION_CREDENTIALS serviceAccount.json
+
+ENV DATABASE_URL "mysql://groot:foodmood15@34.101.217.134:3306/db-fomo-cs"
 
 COPY . .
 
-ENV PORT=8080
+RUN npm install
 
-CMD ["npm","start"]
+RUN npx prisma generate
+
+EXPOSE 8080
+
+CMD ["npm", "run", "start"]
