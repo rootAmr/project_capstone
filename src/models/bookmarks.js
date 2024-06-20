@@ -34,7 +34,7 @@ const createNewBookmark = async (data) => {
         await prisma.food.update({
             where: { id: food_id },
             data: {
-                bookmark_counts: bookmarkCount + 1
+                bookmark_counts: bookmarkCount
             }
         });
 
@@ -59,9 +59,11 @@ const deleteBookmark = async (userId, foodId) => {
             await prisma.food.update({
                 where: { id: foodId },
                 data: {
-                    bookmark_counts: Math.max(bookmarkCount - 1, 0)
+                    bookmark_counts: bookmarkCount
                 }
             });
+        } else {
+            throw new Error('Bookmark not found');
         }
 
         return deletedBookmark;

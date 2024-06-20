@@ -48,13 +48,6 @@ const deleteBookmark = async (req, res) => {
     }
 };
 
-module.exports = {
-    getAllBookmark,
-    createNewBookmark,
-    deleteBookmark
-};
-
-
 const updateBookmark = async (req, res) => {
     const { idBookmark } = req.params;
     const { body } = req;
@@ -72,6 +65,7 @@ const updateBookmark = async (req, res) => {
         });
     }
 }
+
 module.exports = {
     getAllBookmark,
     createNewBookmark,
