@@ -31,7 +31,8 @@
     category    String    @db.VarChar(225)
     url         String?   @db.VarChar(225)
     image       String?   @db.VarChar(225)
-    rating      Int?      @db.TinyInt
+    rating      Float?
+    bookmark_counts Int   @default(0)
 
     user        User      @relation(fields: [user_id], references: [user_id])
     comments    Comment[]

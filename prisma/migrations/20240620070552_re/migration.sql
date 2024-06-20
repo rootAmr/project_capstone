@@ -15,7 +15,8 @@ CREATE TABLE `Food` (
     `category` VARCHAR(225) NOT NULL,
     `url` VARCHAR(225) NULL,
     `image` VARCHAR(225) NULL,
-    `rating` TINYINT NULL,
+    `rating` DOUBLE NULL,
+    `bookmark_counts` INTEGER NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

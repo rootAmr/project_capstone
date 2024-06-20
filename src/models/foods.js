@@ -58,6 +58,7 @@ const createNewFood = async (body, userId) => {
       url: body.url,
       image: body.image,
       rating: body.rating,
+      bookmark_counts: 0,  // Default value for bookmark_counts
     }
   });
 }
@@ -86,7 +87,7 @@ const deleteFood = async (idFood, userId) => {
 module.exports = {
   getAllFood,
   getFoodById,
-  searchFoods, // Ensure this is exported
+  searchFoods,
   createNewFood,
   updateFood,
   deleteFood
