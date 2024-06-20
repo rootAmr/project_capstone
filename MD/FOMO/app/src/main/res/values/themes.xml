@@ -1,30 +1,52 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
 
-    <style name="Base.Theme.FOMO" parent="Theme.Material3.DayNight">
-        <!-- Primary brand color -->
-        <item name="colorPrimary">#F05C5C</item>
+    <style name="Base.Theme.FOMO" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#E46E7E</item>
         <item name="colorPrimaryDark">#C75A5A</item>
         <item name="colorAccent">#F05C5C</item>
-        <!-- Customize your theme here -->
         <item name="android:windowBackground">#FFFFFF</item>
         <item name="android:textColor">#000000</item>
         <item name="android:buttonStyle">@style/Widget.MaterialComponents.Button</item>
-        <item name="android:editTextStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+        <item name="android:editTextStyle">
+            @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
+        </item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Base.Theme.FOMO.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#E46E7E</item>
+        <item name="colorPrimaryDark">#C75A5A</item>
+        <item name="colorAccent">#F05C5C</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Custom EditText style -->
     <style name="CustomEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:background">@drawable/bg_editable</item>
     </style>
 
     <!-- Custom Button style -->
     <style name="CustomButton" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">#E46E7E</item>
+        <item name="android:background">@drawable/bg_button</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="CustomImageView">
+        <item name="android:tint">@color/black</item>
+    </style>
 
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="strokeWidth">1dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+    </style>
 
     <style name="Theme.FOMO" parent="Base.Theme.FOMO" />
 </resources>

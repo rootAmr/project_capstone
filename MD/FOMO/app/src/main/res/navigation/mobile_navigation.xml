@@ -7,19 +7,35 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.capstone.foodmood.ui.home.HomeFragment"
+        android:name="com.c241.ps341.fomo.ui.fragment.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_bookmark">
+
+        <action
+            android:id="@+id/action_start_to_result"
+            app:destination="@id/resultFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="com.capstone.foodmood.ui.favorite.FavoriteFragment"
+        android:name="com.c241.ps341.fomo.ui.fragment.BookmarkFragment"
         android:label="@string/title_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_reload"
+            app:destination="@id/navigation_favorite" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.capstone.foodmood.ui.profile.ProfileFragment"
+        android:name="com.c241.ps341.fomo.ui.fragment.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.c241.ps341.fomo.ui.fragment.FoodFragment"
+        android:label="Result Fragment"
+        tools:layout="@layout/fragment_food"/>
 </navigation>

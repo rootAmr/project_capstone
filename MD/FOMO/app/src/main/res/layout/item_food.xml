@@ -1,86 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="82dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_item"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
     android:layout_marginHorizontal="30dp"
     android:layout_marginVertical="4dp"
     app:cardCornerRadius="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginEnd="60dp"
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                app:cardCornerRadius="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/iv_photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="image" />
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/tv_title"
+            <ImageView
+                android:id="@+id/iv_photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/poppins"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.026"
-                app:layout_constraintStart_toEndOf="@+id/cardView"
-                app:layout_constraintTop_toTopOf="@+id/cardView"
-                app:layout_constraintVertical_bias="0.483"
-                tools:text="This is a Product" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:contentDescription="image"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_gravity="bottom"
-            android:gravity="end|center"
-            android:paddingEnd="10dp">
-
-            <ToggleButton
-                android:id="@+id/toggle_"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/favorite_toggle"
-                android:focusableInTouchMode="false"
-                android:text="Add Bookmark"
-                android:textOff=""
-                android:textOn="" />
-
-            <TextView
-                android:id="@+id/tv_bookmark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-
-                android:singleLine="true"
-                />
-        </LinearLayout>
-
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppins"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView"
+            tools:text="This is a Product" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginVertical="8dp"
+        android:gravity="center"
+        android:paddingEnd="10dp"
+        tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:id="@+id/btn_bookmark"
+            style="@style/CustomImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_bookmark_off"
+            android:text="Add Bookmark" />
+
+        <TextView
+            android:id="@+id/tv_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:singleLine="true"
+            android:text="10"
+            android:textAlignment="textEnd"
+            android:textSize="16sp" />
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

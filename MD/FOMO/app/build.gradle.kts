@@ -1,20 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.devtools.ksp")
-    id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.capstone.foodmood"
+    namespace = "com.c241.ps341.fomo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.capstone.foodmood"
-        minSdk = 21
+        applicationId = "com.c241.ps341.fomo"
+        minSdk = 23
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 24062100
+        versionName = "0.6a"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,6 +26,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        defaultConfig {
+            buildConfigField("String", "CLIENT_ID", "\"908454400659-1vf2fv9hrhang9rf0urpeckc48ba67hi.apps.googleusercontent.com\"")
+            buildConfigField("String", "BASE_URL", "\"https://fomo-f5lpd4ofwq-et.a.run.app/\"")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -37,6 +40,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -51,14 +55,24 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.auth)
+    implementation(libs.googleid)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation ("com.google.android.material:material:1.0.0")
-    implementation ("com.github.bumptech.glide:glide:4.11.0")
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("jp.wasabeef:blurry:4.0.0")
+    implementation(libs.glide)
+    implementation(libs.play.services.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("com.squareup.retrofit2:retrofit:2.6.2")
+    implementation("com.squareup.retrofit2:converter-gson:2.6.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }

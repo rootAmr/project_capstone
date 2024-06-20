@@ -2,102 +2,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
-    android:layout_margin="30dp">
+    android:padding="30dp"
+    tools:context=".ui.activity.LoginActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_text"
-        android:textStyle="bold"
-        android:textSize="32sp"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="30dp"
+        android:fontFamily="@font/poppins"
         android:gravity="start"
-        android:fontFamily="@font/poppins"
-        android:paddingVertical="50dp"
-        />
+        android:text="@string/login_text"
+        android:textSize="32sp"
+        android:textStyle="bold" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/CustomTextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:fontFamily="@font/poppins"
-        android:hint="Email"
-        android:padding="12dp"
-        android:background="@drawable/edit_text_background"
-        android:textColor="#000000" />
+        android:layout_height="wrap_content">
 
-    <EditText
+        <com.c241.ps341.fomo.custom.CustomEditEmail
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:fontFamily="@font/poppins"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:fontFamily="@font/poppins"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:background="@drawable/edit_text_background"
-        android:textColor="#000000" />
+        android:layout_height="wrap_content">
 
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CustomTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.c241.ps341.fomo.custom.CustomEditPassword
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/poppins"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:outlineProvider="@color/black"
+                android:padding="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_password"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp">
+
+            <ImageView
+                android:id="@+id/iv_password_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_eye_off" />
+
+            <ImageView
+                android:id="@+id/iv_password_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_eye_on"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_login"
+        style="@style/CustomButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_background"
-        android:text="Login"
-        android:layout_marginTop="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins"
-        android:textSize="18sp"/>
+        android:text="Login"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="1dp"
-            app:cardBackgroundColor="@color/red1"/>
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardElevation="0dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_continue"
-            android:textSize="18sp"
-            android:paddingVertical="20dp"
             android:layout_marginHorizontal="10dp"
-            android:gravity="center"
+            android:layout_marginVertical="20dp"
             android:fontFamily="@font/poppins"
-            />
+            android:gravity="center"
+            android:text="@string/login_continue"
+            android:textSize="18sp" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="1dp"
-            app:cardBackgroundColor="@color/red1"/>
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardElevation="0dp" />
     </LinearLayout>
 
-
     <androidx.cardview.widget.CardView
+        android:id="@+id/btn_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@drawable/edit_text_background"
-        app:cardCornerRadius="10dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:src="@drawable/google"
-            android:layout_margin="10dp"
-            android:paddingTop="5dp"/>
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp">
+
+        <FrameLayout
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_google"
+                android:layout_marginBottom="2dp"/>
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/tv_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="if dont have account register Here"
-        android:textSize="18sp"
-        android:paddingVertical="20dp"
-        android:gravity="center"
+        android:layout_marginVertical="20dp"
         android:fontFamily="@font/poppins"
-        />
-
+        android:gravity="center"
+        android:text="if don't have an account Register Here"
+        android:textSize="18sp" />
 </LinearLayout>
