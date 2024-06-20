@@ -11,6 +11,9 @@ router.post('/', upload.single('image'), foodsController.createNewFood);
 router.get('/', foodsController.getAllFood);
 router.get('/:idFood', foodsController.getFoodById);
 
+// SEARCH - POST
+router.post('/search', foodsController.searchFoods);
+
 // UPDATE - PATCH
 router.patch('/:idFood', upload.single('image'), foodsController.updateFood);
 

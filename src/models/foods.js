@@ -11,6 +11,42 @@ const getFoodById = async (idFood) => {
   });
 }
 
+const searchFoods = async (query) => {
+  try {
+    const lowerQuery = query.toLowerCase();
+    return await prisma.food.findMany({
+      where: {
+        OR: [
+          {
+            foodName: {
+              contains: lowerQuery,
+            },
+          },
+          {
+            ingredients: {
+              contains: lowerQuery,
+            },
+          },
+          {
+            steps: {
+              contains: lowerQuery,
+            },
+          },
+          {
+            category: {
+              contains: lowerQuery,
+            },
+          }
+        ],
+      },
+      take: 10,
+    });
+  } catch (error) {
+    console.error('Error in searchFoods:', error);
+    throw error;
+  }
+}
+
 const createNewFood = async (body, userId) => {
   return await prisma.food.create({
     data: {
@@ -49,8 +85,9 @@ const deleteFood = async (idFood, userId) => {
 
 module.exports = {
   getAllFood,
-  getFoodById, // Export the new method
+  getFoodById,
+  searchFoods, // Ensure this is exported
   createNewFood,
   updateFood,
   deleteFood
-}
+};

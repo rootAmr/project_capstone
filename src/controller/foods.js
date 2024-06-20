@@ -38,6 +38,30 @@ const getFoodById = async (req, res) => {
     }
 };
 
+const searchFoods = async (req, res) => {
+    const { query } = req.body;
+    if (!query || typeof query !== 'string') {
+        return res.status(400).json({
+            message: 'Invalid query',
+            serverMessage: 'Query parameter is required and must be a string',
+        });
+    }
+
+    try {
+        const foods = await foodsModel.searchFoods(query);
+        res.json({
+            message: 'search foods success',
+            data: foods
+        });
+    } catch (error) {
+        console.error(`Error searching foods: ${error}`);
+        res.status(500).json({
+            message: 'server error',
+            serverMessage: error,
+        });
+    }
+};
+
 const createNewFood = async (req, res) => {
     const { body } = req;
     const userId = req.user.uid; // Updated to use Firebase uid
@@ -121,7 +145,8 @@ const deleteFood = async (req, res) => {
 
 module.exports = {
     getAllFood,
-    getFoodById, // Export the new controller function
+    getFoodById,
+    searchFoods, // Ensure this is exported
     createNewFood,
     updateFood,
     deleteFood
