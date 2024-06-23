@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +25,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c241.ps341.fomo.R
 import com.c241.ps341.fomo.adapter.FoodAdapter
+import com.c241.ps341.fomo.adapter.MyFoodAdapter
 import com.c241.ps341.fomo.api.response.FoodDataItem
 import com.c241.ps341.fomo.databinding.FragmentHomeBinding
 import com.c241.ps341.fomo.ui.activity.DetailActivity
@@ -38,6 +40,16 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: FoodAdapter
     private lateinit var viewModel: MainViewModel
+
+    private val editItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.getFoods().observe(viewLifecycleOwner) {
+                binding.progressBar.visibility = View.GONE
+                adapter.setList(it)
+                binding.recyclerView.adapter = adapter
+            }
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -67,7 +79,8 @@ class HomeFragment : Fragment() {
                     it.putExtra("extra_userid", data.userId)
                     it.putExtra("extra_id", data.id)
                     it.putExtra("extra_rating", data.rating)
-                    startActivity(it)
+                    it.putExtra("extra_category", data.category)
+                    editItemLauncher.launch(it)
                 }
             }
         })
@@ -85,7 +98,11 @@ class HomeFragment : Fragment() {
                         putString("query", query)
                     }
 
-                    findNavController().navigate(R.id.action_start_to_result, bundle)
+                    val currentDestination = findNavController().currentDestination
+
+                    if (currentDestination?.id == R.id.navigation_home) {
+                        findNavController().navigate(R.id.action_start_to_result, bundle)
+                    }
                 }
 
                 true
@@ -138,17 +155,14 @@ class HomeFragment : Fragment() {
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or if (!isDarkMode) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
 
                     if (isDarkMode) {
-                        animateStatusBarColorChange(
-                            requireActivity().window,
-                            Color.parseColor("#121212")
-                        )
+                        requireActivity().window.statusBarColor = Color.parseColor("#121212")
                     } else {
-                        animateStatusBarColorChange(requireActivity().window, Color.WHITE)
+                        requireActivity().window.statusBarColor = Color.WHITE
                     }
                 } else {
                     requireActivity().window.decorView.systemUiVisibility =
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    animateStatusBarColorChange(requireActivity().window, Color.TRANSPARENT)
+                    requireActivity().window.statusBarColor = Color.TRANSPARENT
                 }
             }
         }
@@ -183,7 +197,7 @@ class HomeFragment : Fragment() {
             if (imageUri != null) {
                 val intent = Intent(activity, UploadActivity::class.java)
                 intent.putExtra("extra_uri", imageUri.toString())
-                startActivity(intent)
+                editItemLauncher.launch(intent)
             } else {
                 val extras = data?.extras
                 val imageBitmap = extras?.get("data") as? Bitmap
@@ -197,7 +211,7 @@ class HomeFragment : Fragment() {
                     val uri = Uri.parse(path)
                     val intent = Intent(activity, UploadActivity::class.java)
                     intent.putExtra("extra_uri", uri.toString())
-                    startActivity(intent)
+                    editItemLauncher.launch(intent)
                 }
             }
         }
@@ -210,7 +224,11 @@ class HomeFragment : Fragment() {
                 putString("query", "")
             }
 
-            findNavController().navigate(R.id.action_start_to_result, bundle)
+            val currentDestination = findNavController().currentDestination
+
+            if (currentDestination?.id == R.id.navigation_home) {
+                findNavController().navigate(R.id.action_start_to_result, bundle)
+            }
         }
     }
 
@@ -223,19 +241,5 @@ class HomeFragment : Fragment() {
         val chooser = Intent.createChooser(intent, "Pilih gambar")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent, captureIntent))
         startActivityForResult(chooser, 1)
-    }
-
-    private fun animateStatusBarColorChange(window: Window, toColor: Int) {
-        window.let {
-            val fromColor = it.statusBarColor
-            val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), fromColor, toColor)
-            colorAnimation.duration = 300
-
-            colorAnimation.addUpdateListener { animator ->
-                it.statusBarColor = animator.animatedValue as Int
-            }
-
-            colorAnimation.start()
-        }
     }
 }

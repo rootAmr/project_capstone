@@ -2,7 +2,9 @@
 
 package com.c241.ps341.fomo.ui.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +37,9 @@ class EditActivity : AppCompatActivity() {
             etEmail.setText(email)
 
             btnSubmit.setOnClickListener {
-                updateProfile(etName.text.toString(), etEmail.text.toString())
+                val newName = etName.text.toString()
+                if (newName.isNotEmpty()) updateProfile(etName.text.toString())
+                else Toast.makeText(this@EditActivity, "Harap isi bidang yang kosong", Toast.LENGTH_SHORT).show()
             }
 
             ivBack.setOnClickListener {
@@ -44,18 +48,20 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateProfile(name: String, email: String) {
+    private fun updateProfile(name: String) {
         val id: String = viewModel.getId()
         val progressDialog = ProgressDialog.show(this@EditActivity, null, "Harap tunggu")
         val userRef = db.reference.child("user").child(id)
-        val user = mapOf("name" to name, "email" to email)
+        val user = mapOf("name" to name)
 
         userRef.updateChildren(user).addOnCompleteListener { task ->
             progressDialog.dismiss()
 
             if (task.isSuccessful) {
                 viewModel.setName(name)
-                viewModel.setEmail(email)
+                val intent = Intent()
+                intent.putExtra("extra_name", name)
+                setResult(Activity.RESULT_OK, intent)
                 Toast.makeText(
                     this@EditActivity,
                     "Profile updated successfully",

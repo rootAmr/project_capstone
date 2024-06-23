@@ -2,6 +2,7 @@ package com.c241.ps341.fomo.ui.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -28,10 +29,10 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUploadBinding
     private lateinit var viewModel: MainViewModel
     private var categorySelected: String = "none"
-    private var currentImage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setResult(Activity.RESULT_OK)
         binding = ActivityUploadBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this, ViewModelFactory(this))[MainViewModel::class.java]
 
@@ -81,49 +82,59 @@ class UploadActivity : AppCompatActivity() {
                 val ingredient = etIngredient.text.toString()
                 val step = etDescription.text.toString()
 
-                viewModel.postFood(name, ingredient, step, categorySelected).observe(this@UploadActivity) {
-                    if (viewModel.foodPostMsg() == "create new food success") {
-                        val imageUri = intent.getStringExtra("extra_uri")
-                        Log.i("mgrlog", imageUri.toString())
-                        val inputStream: InputStream? =
-                            contentResolver.openInputStream(Uri.parse(imageUri))
-                        val file = File(cacheDir, "upload_image.jpg")
-                        val outputStream = FileOutputStream(file)
+                if (name.isNotEmpty() && ingredient.isNotEmpty() && step.isNotEmpty() && categorySelected != "none") {
+                    val progressDialog = ProgressDialog.show(this@UploadActivity, null, "Harap tunggu")
 
-                        inputStream?.use { input ->
-                            outputStream.use { output ->
-                                input.copyTo(output)
-                            }
-                        }
+                    viewModel.postFood(name, ingredient, step, categorySelected).observe(this@UploadActivity) {
+                        if (viewModel.foodPostMsg() == "create new food success") {
+                            val imageUri = intent.getStringExtra("extra_uri")
+                            Log.i("mgrlog", imageUri.toString())
+                            val inputStream: InputStream? =
+                                contentResolver.openInputStream(Uri.parse(imageUri))
+                            val file = File(cacheDir, "upload_image.jpg")
+                            val outputStream = FileOutputStream(file)
 
-                        viewModel.patchFood(file).observe(this@UploadActivity) { it1 ->
-                            if (it1 == "Update Food Success") {
-                                Toast.makeText(
-                                    this@UploadActivity,
-                                    "The form has been uploaded",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                Intent(this@UploadActivity, DetailActivity::class.java).also { intent ->
-                                    intent.putExtra("extra_foodname", name)
-                                    intent.putExtra("extra_image", imageUri)
-                                    intent.putExtra("extra_ingredients", ingredient)
-                                    intent.putExtra("extra_steps", step)
-                                    intent.putExtra("extra_userid", viewModel.getId())
-                                    intent.putExtra("extra_id", viewModel.foodId())
-                                    intent.putExtra("extra_rating", it?.rating)
-                                    startActivity(intent)
+                            inputStream?.use { input ->
+                                outputStream.use { output ->
+                                    input.copyTo(output)
                                 }
-
-                                finish()
-                            } else {
-                                Toast.makeText(this@UploadActivity, "Error", Toast.LENGTH_SHORT)
-                                    .show()
                             }
+
+                            viewModel.patchFood(file).observe(this@UploadActivity) { it1 ->
+                                progressDialog.dismiss()
+
+                                if (it1 == "Update Food Success") {
+                                    Toast.makeText(
+                                        this@UploadActivity,
+                                        "The form has been uploaded",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    Intent(this@UploadActivity, DetailActivity::class.java).also { intent ->
+                                        intent.putExtra("extra_foodname", name)
+                                        intent.putExtra("extra_image", imageUri)
+                                        intent.putExtra("extra_ingredients", ingredient)
+                                        intent.putExtra("extra_steps", step)
+                                        intent.putExtra("extra_userid", viewModel.getId())
+                                        intent.putExtra("extra_id", viewModel.foodId())
+                                        intent.putExtra("extra_rating", it?.rating)
+                                        intent.putExtra("extra_category", categorySelected)
+                                        startActivity(intent)
+                                    }
+
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@UploadActivity, "Error", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                        } else {
+                            progressDialog.dismiss()
+                            Toast.makeText(this@UploadActivity, "Error", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this@UploadActivity, "Error", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Toast.makeText(this@UploadActivity, "Harap isi bidang yang kosong", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -136,7 +147,7 @@ class UploadActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showOptions()
             }
         }
@@ -145,17 +156,16 @@ class UploadActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             val imageUri: Uri? = data?.data
+
             if (imageUri != null) {
-                currentImage = imageUri.toString()
-                val intent = Intent(applicationContext, UploadActivity::class.java)
-                intent.putExtra("extra_uri", imageUri.toString())
-                startActivity(intent)
-                finish()
+                binding.ivImage.setImageURI(imageUri)
             } else {
                 val extras = data?.extras
                 val imageBitmap = extras?.get("data") as? Bitmap
+
                 if (imageBitmap != null) {
                     val path = MediaStore.Images.Media.insertImage(
                         applicationContext.contentResolver,
@@ -164,11 +174,7 @@ class UploadActivity : AppCompatActivity() {
                         null
                     )
                     val uri = Uri.parse(path)
-                    currentImage = path
-                    val intent = Intent(applicationContext, UploadActivity::class.java)
-                    intent.putExtra("extra_uri", uri.toString())
-                    startActivity(intent)
-                    finish()
+                    binding.ivImage.setImageURI(uri)
                 }
             }
         }

@@ -1,7 +1,5 @@
 package com.c241.ps341.fomo.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.c241.ps341.fomo.api.ApiService
 import com.c241.ps341.fomo.api.request.BookmarkRequest
 import com.c241.ps341.fomo.api.request.CommentRequest
@@ -29,7 +27,6 @@ class DataRepository private constructor(
 ) {
     var foodId: Int = 0
     var foodPostMsg: String = ""
-    var photoUrl: String = ""
 
     fun getToken(): String {
         return runBlocking { pref.getToken().first() }
@@ -71,196 +68,140 @@ class DataRepository private constructor(
         runBlocking { pref.setPhoto(value) }
     }
 
-    fun getFoods(token: String): LiveData<List<FoodDataItem?>> {
-        val value = MutableLiveData<List<FoodDataItem?>>()
-
-        runBlocking {
-            try {
-                val response = apiService.getFoods("bearer $token")
-                value.value = response.data!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun getFoods(token: String): List<FoodDataItem?> {
+        return try {
+            val response = apiService.getFoods("bearer $token")
+            response.data!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emptyList()
         }
-
-        return value
     }
 
-    fun postFood(
+    suspend fun postFood(
         token: String,
         name: String,
         ingredient: String,
         step: String,
         category: String
-    ): LiveData<FoodPostData?> {
-        val value = MutableLiveData<FoodPostData?>()
-
-        runBlocking {
-            try {
-                val response = apiService.postFood("bearer $token", UploadRequest(name, ingredient, step, category))
-                foodId = response.data?.id!!
-                foodPostMsg = response.message!!
-                value.value = response.data
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    ): FoodPostData? {
+        return try {
+            val response = apiService.postFood(
+                "bearer $token",
+                UploadRequest(name, ingredient, step, category)
+            )
+            foodId = response.data?.id!!
+            foodPostMsg = response.message!!
+            response.data
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            null
         }
-
-        return value
     }
 
-    fun patchFood(token: String, file: File): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val requestFile: RequestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val body: MultipartBody.Part =
-                    MultipartBody.Part.createFormData("image", file.name, requestFile)
-                val response = apiService.patchFood("bearer $token", foodId, body)
-                photoUrl = response.data?.image!!
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun patchFood(token: String, file: File): String {
+        return try {
+            val requestFile: RequestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val body: MultipartBody.Part =
+                MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val response = apiService.patchFood("bearer $token", foodId, body)
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun deleteFood(token: String, id: Int): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val response = apiService.deleteFood("bearer $token", id)
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun deleteFood(token: String, id: Int): String {
+        return try {
+            val response = apiService.deleteFood("bearer $token", id)
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun getBookmarks(token: String): LiveData<List<BookmarkDataItem?>> {
-        val value = MutableLiveData<List<BookmarkDataItem?>>()
-
-        runBlocking {
-            try {
-                val response = apiService.getBookmarks("bearer $token")
-                value.value = response.data!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun getBookmarks(token: String): List<BookmarkDataItem?> {
+        return try {
+            val response = apiService.getBookmarks("bearer $token")
+            response.data!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emptyList()
         }
-
-        return value
     }
 
-    fun postBookmark(token: String, foodId: Int): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val response = apiService.postBookmark("bearer $token", BookmarkRequest(foodId))
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun postBookmark(token: String, foodId: Int): String {
+        return try {
+            val response = apiService.postBookmark("bearer $token", BookmarkRequest(foodId))
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun deleteBookmark(token: String, id: Int): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val response = apiService.deleteBookmark("bearer $token", id)
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun deleteBookmark(token: String, id: Int): String {
+        return try {
+            val response = apiService.deleteBookmark("bearer $token", id)
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun getComments(token: String): LiveData<List<CommentDataItem?>> {
-        val value = MutableLiveData<List<CommentDataItem?>>()
-
-        runBlocking {
-            try {
-                val response = apiService.getComments("bearer $token")
-                value.value = response.data!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun getComments(token: String): List<CommentDataItem?> {
+        return try {
+            val response = apiService.getComments("bearer $token")
+            response.data!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emptyList()
         }
-
-        return value
     }
 
-    fun postComment(token: String, foodId: Int, commentField: String): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val response = apiService.postComment("bearer $token", CommentRequest(foodId, commentField))
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun postComment(token: String, foodId: Int, commentField: String): String {
+        return try {
+            val response =
+                apiService.postComment("bearer $token", CommentRequest(foodId, commentField))
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun getRatings(token: String): LiveData<List<RatingDataItem?>> {
-        val value = MutableLiveData<List<RatingDataItem?>>()
-
-        runBlocking {
-            try {
-                val response = apiService.getRatings("bearer $token")
-                value.value = response.data!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun getRatings(token: String): List<RatingDataItem?> {
+        return try {
+            val response = apiService.getRatings("bearer $token")
+            response.data!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emptyList()
         }
-
-        return value
     }
 
-    fun postRating(token: String, foodId: Int, star: Int): LiveData<String> {
-        val value = MutableLiveData<String>()
-
-        runBlocking {
-            try {
-                val response = apiService.postRating("bearer $token", RatingRequest(foodId, star))
-                value.value = response.message!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun postRating(token: String, foodId: Int, star: Int): String {
+        return try {
+            val response =
+                apiService.postRating("bearer $token", RatingRequest(foodId, star))
+            response.message!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            ""
         }
-
-        return value
     }
 
-    fun postSearch(token: String, query: String): LiveData<List<FoodDataItem?>> {
-        val value = MutableLiveData<List<FoodDataItem?>>()
-
-        runBlocking {
-            try {
-                val response = apiService.postSearch("bearer $token", SearchRequest(query))
-                value.value = response.data!!
-            } catch (e: HttpException) {
-                e.printStackTrace()
-            }
+    suspend fun postSearch(token: String, query: String): List<FoodDataItem?> {
+        return try {
+            val response = apiService.postSearch("bearer $token", SearchRequest(query))
+            response.data!!
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emptyList()
         }
-
-        return value
     }
 
     companion object {

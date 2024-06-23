@@ -220,47 +220,59 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(email: String, password: String) {
         val progressDialog = ProgressDialog.show(this, null, "Harap tunggu")
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {
-            if (it.isSuccessful) {
-                val userRef = db.reference.child("user")
-                val query = userRef.orderByChild("email").equalTo(email)
+        val userRef = db.reference.child("user")
+        val query = userRef.orderByChild("email").equalTo(email)
 
-                query.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        progressDialog.dismiss()
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (userSnapshot in dataSnapshot.children) {
+                        val user = userSnapshot.getValue(UserData::class.java)
 
-                        if (dataSnapshot.exists()) {
-                            for (userSnapshot in dataSnapshot.children) {
-                                val user = userSnapshot.getValue(UserData::class.java)
+                        if (user?.password == hashPassword(password)) {
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(this@LoginActivity) { it2 ->
+                                    if (it2.isSuccessful) {
+                                        progressDialog.dismiss()
+                                        auth.currentUser?.uid?.let { it1 ->
+                                            viewModel.setId(it1)
+                                        }
 
-                                if (user?.password == hashPassword(password)) {
-                                    auth.currentUser?.uid?.let { it1 ->
-                                        viewModel.setId(it1)
+                                        user.name?.let { it1 -> viewModel.setName(it1) }
+                                        user.email?.let { it1 -> viewModel.setEmail(it1) }
+                                        user.photoUrl?.let { it1 -> viewModel.setPhoto(it1) }
+                                        setCurrentUser(auth.currentUser)
+                                    } else {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "Database error",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
-
-                                    user.name?.let { it1 -> viewModel.setName(it1) }
-                                    user.email?.let { it1 -> viewModel.setEmail(it1) }
-                                    user.photoUrl?.let { it1 -> viewModel.setPhoto(it1) }
-                                    setCurrentUser(auth.currentUser)
                                 }
-                            }
+                        } else {
+                            progressDialog.dismiss()
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Kata sandi yang anda masukkan salah",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        progressDialog.dismiss()
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Database error",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
-            } else {
-                progressDialog.dismiss()
-                Toast.makeText(this, "Email atau password tidak cocok", Toast.LENGTH_SHORT).show()
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Email yang anda masukkan tidak ditemukan",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun setCurrentUser(currentUser: FirebaseUser?) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.c241.ps341.fomo.R
 import com.c241.ps341.fomo.api.response.FoodDataItem
 import com.c241.ps341.fomo.databinding.ItemMyfoodBinding
 
@@ -44,11 +45,43 @@ class MyFoodAdapter(
                     onDeleteClickCallback?.onDeleteClicked(data!!, position)
                 }
 
-                Glide.with(itemView)
-                    .load(data?.image)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .centerCrop()
-                    .into(ivPhoto)
+                if (data?.image != null) {
+                    Glide.with(itemView)
+                        .load(data?.image)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .centerCrop()
+                        .into(ivPhoto)
+                } else {
+                    val category = data?.category
+
+                    when (category) {
+                        "Ayam" -> {
+                            ivPhoto.setImageResource(R.drawable.img_chicken)
+                        }
+                        "Tempe" -> {
+                            ivPhoto.setImageResource(R.drawable.img_soybean)
+                        }
+                        "Telur" -> {
+                            ivPhoto.setImageResource(R.drawable.img_tofu)
+                        }
+                        "Ikan" -> {
+                            ivPhoto.setImageResource(R.drawable.img_fish)
+                        }
+                        "Tahu" -> {
+                            ivPhoto.setImageResource(R.drawable.img_tofu)
+                        }
+                        "Udang" -> {
+                            ivPhoto.setImageResource(R.drawable.img_shrimp)
+                        }
+                        "Sapi" -> {
+                            ivPhoto.setImageResource(R.drawable.img_cow)
+                        }
+                        "Kambing" -> {
+                            ivPhoto.setImageResource(R.drawable.img_goat)
+                        }
+                    }
+                }
+
                 tvTitle.text = data?.foodName
                 tvBookmark.text = data?.bookmarkCounts.toString()
             }

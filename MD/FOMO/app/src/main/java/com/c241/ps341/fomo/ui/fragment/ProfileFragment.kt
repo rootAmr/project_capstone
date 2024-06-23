@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
@@ -112,7 +113,7 @@ class ProfileFragment : Fragment() {
                 Intent(activity, EditActivity::class.java).also {
                     it.putExtra("extra_name", tvName.text)
                     it.putExtra("extra_email", tvEmail.text)
-                    startActivity(it)
+                    editProfileLauncher.launch(it)
                 }
             }
 
@@ -158,22 +159,25 @@ class ProfileFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            val imageUri: Uri? = data?.data
-            if (imageUri != null) {
-                updatePhoto(imageUri)
-            } else {
-                val extras = data?.extras
-                val imageBitmap = extras?.get("data") as? Bitmap
-                if (imageBitmap != null) {
-                    val path = MediaStore.Images.Media.insertImage(
-                        requireContext().contentResolver,
-                        imageBitmap,
-                        "Title",
-                        null
-                    )
-                    val uri = Uri.parse(path)
-                    updatePhoto(uri)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                val imageUri: Uri? = data?.data
+                if (imageUri != null) {
+                    updatePhoto(imageUri)
+                } else {
+                    val extras = data?.extras
+                    val imageBitmap = extras?.get("data") as? Bitmap
+                    if (imageBitmap != null) {
+                        val path = MediaStore.Images.Media.insertImage(
+                            requireContext().contentResolver,
+                            imageBitmap,
+                            "Title",
+                            null
+                        )
+                        val uri = Uri.parse(path)
+                        updatePhoto(uri)
+                    }
                 }
             }
         }
@@ -229,4 +233,15 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
+    private val editProfileLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val newName = result.data?.getStringExtra("extra_name")
+
+                if (newName != null) {
+                    binding.tvName.text = newName
+                }
+            }
+        }
 }

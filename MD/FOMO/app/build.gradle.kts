@@ -12,8 +12,8 @@ android {
         applicationId = "com.c241.ps341.fomo"
         minSdk = 23
         targetSdk = 34
-        versionCode = 24062100
-        versionName = "0.6a"
+        versionCode = 24062111
+        versionName = "0.10a"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

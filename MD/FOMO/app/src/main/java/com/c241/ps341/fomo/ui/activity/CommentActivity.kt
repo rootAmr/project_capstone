@@ -1,5 +1,6 @@
 package com.c241.ps341.fomo.ui.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.widget.Toast
@@ -37,6 +38,7 @@ class CommentActivity : AppCompatActivity() {
                                 viewModel.postComment(id, description).observe(this@CommentActivity) { it1 ->
                                     if (it1 == "create new Comment success") {
                                         progressDialog.dismiss()
+                                        setResult(Activity.RESULT_OK)
                                         Toast.makeText(
                                             this@CommentActivity,
                                             "Comment has been added",
@@ -54,6 +56,7 @@ class CommentActivity : AppCompatActivity() {
                                 }
                             } else {
                                 progressDialog.dismiss()
+                                setResult(Activity.RESULT_OK)
                                 Toast.makeText(
                                     this@CommentActivity,
                                     "Comment has been added",

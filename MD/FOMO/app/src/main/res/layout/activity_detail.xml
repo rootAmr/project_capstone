@@ -88,7 +88,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_light"
-                                android:text="Publisher :"
+                                android:text="Publisher : Loading..."
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
 
@@ -129,20 +129,24 @@
                         tools:layout_editor_absoluteX="320dp"
                         tools:layout_editor_absoluteY="0dp">
 
-                        <ProgressBar
-                            android:id="@+id/progress_bar"
+                        <RelativeLayout
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp">
 
-                        <ImageView
-                            android:id="@+id/iv_bookmark"
-                            style="@style/CustomImageView"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_margin="10dp"
-                            android:src="@drawable/ic_bookmark2_off"
-                            android:visibility="gone" />
+                            <ProgressBar
+                                android:id="@+id/pb_bookmark"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:id="@+id/iv_bookmark"
+                                style="@style/CustomImageView"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_bookmark2_off"
+                                android:visibility="gone" />
+                        </RelativeLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -212,12 +216,37 @@
                         android:text="Komentar"
                         android:textSize="16dp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:ignore="MissingConstraints"
-                        tools:listitem="@layout/item_comment" />
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:ignore="MissingConstraints"
+                            tools:listitem="@layout/item_comment" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ProgressBar
+                                android:id="@id/progress_bar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"/>
+
+                            <TextView
+                                android:id="@+id/tv_empty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/poppins"
+                                android:text="Postingan ini belum ada komentar"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
                     <Button
                         android:id="@+id/btn_submit"
@@ -227,7 +256,8 @@
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/poppins"
                         android:text="Tambah Komentar"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

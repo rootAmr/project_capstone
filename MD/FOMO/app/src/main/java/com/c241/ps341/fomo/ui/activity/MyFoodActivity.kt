@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,8 @@ class MyFoodActivity : AppCompatActivity(), MyFoodAdapter.OnDeleteClickCallback 
                     it.putExtra("extra_steps", data?.steps)
                     it.putExtra("extra_userid", data?.userId)
                     it.putExtra("extra_id", data?.id)
+                    it.putExtra("extra_rating", data?.rating)
+                    it.putExtra("extra_category", data?.category)
                     startActivity(it)
                 }
             }
@@ -58,6 +61,7 @@ class MyFoodActivity : AppCompatActivity(), MyFoodAdapter.OnDeleteClickCallback 
             viewModel.getFoods().observe(this@MyFoodActivity) {
                 val list = it.filter { data -> data?.userId == viewModel.getId() }
                 foodId = list.map { data -> data?.id }
+                Log.i("mgrlog", foodId.toString())
                 progressBar.visibility = View.GONE
                 adapter.setList(list)
                 recyclerView.adapter = adapter
@@ -81,6 +85,7 @@ class MyFoodActivity : AppCompatActivity(), MyFoodAdapter.OnDeleteClickCallback 
             .setCancelable(true)
             .setPositiveButton("IYA") { _, _ ->
                 val progressDialog = ProgressDialog.show(this, null, "Harap tunggu")
+
                 viewModel.deleteFood(foodId[position]!!).observe(this@MyFoodActivity) {
                     progressDialog.dismiss()
 

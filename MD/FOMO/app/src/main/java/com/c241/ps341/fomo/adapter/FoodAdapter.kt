@@ -113,29 +113,33 @@ class FoodAdapter(private val context: Context?, private var isBookmark: Boolean
                     val category = data?.category
 
                     when (category) {
-                        "ayam", "Ayam" -> {
+                        "Ayam" -> {
                             ivPhoto.setImageResource(R.drawable.img_chicken)
                         }
-                        "tempe", "Tempe" -> {
+                        "Tempe" -> {
                             ivPhoto.setImageResource(R.drawable.img_soybean)
                         }
-                        "telur", "Telur" -> {
+                        "Telur" -> {
                             ivPhoto.setImageResource(R.drawable.img_tofu)
                         }
-                        "ikan", "Ikan" -> {
+                        "Ikan" -> {
                             ivPhoto.setImageResource(R.drawable.img_fish)
                         }
-                        "udang", "Udang" -> {
+                        "Tahu" -> {
+                            ivPhoto.setImageResource(R.drawable.img_tofu)
+                        }
+                        "Udang" -> {
                             ivPhoto.setImageResource(R.drawable.img_shrimp)
                         }
-                        "sapi", "Sapi" -> {
+                        "Sapi" -> {
                             ivPhoto.setImageResource(R.drawable.img_cow)
                         }
-                        "kambing", "Kambing" -> {
+                        "Kambing" -> {
                             ivPhoto.setImageResource(R.drawable.img_goat)
                         }
                     }
                 }
+
                 tvTitle.text = data?.foodName
                 tvBookmark.text = formatBookmarkCount(data?.bookmarkCounts!!)
             }

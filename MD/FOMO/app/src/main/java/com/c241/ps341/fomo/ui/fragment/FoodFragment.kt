@@ -87,6 +87,8 @@ class FoodFragment : Fragment() {
                     it.putExtra("extra_steps", data.steps)
                     it.putExtra("extra_userid", data.userId)
                     it.putExtra("extra_id", data.id)
+                    it.putExtra("extra_rating", data.rating)
+                    it.putExtra("extra_category", data.category)
                     startActivity(it)
                 }
             }
@@ -103,6 +105,12 @@ class FoodFragment : Fragment() {
                     progressBar.visibility = View.GONE
                     adapter.setList(it)
                     recyclerView.adapter = adapter
+
+                    if (adapter.itemCount == 0) {
+                        tvEmpty.visibility = View.VISIBLE
+                    } else {
+                        tvEmpty.visibility = View.GONE
+                    }
                 }
             } else {
                 viewModel.getFoods().observe(viewLifecycleOwner) {
@@ -110,6 +118,12 @@ class FoodFragment : Fragment() {
                     progressBar.visibility = View.GONE
                     adapter.setList(list)
                     recyclerView.adapter = adapter
+
+                    if (adapter.itemCount == 0) {
+                        tvEmpty.visibility = View.VISIBLE
+                    } else {
+                        tvEmpty.visibility = View.GONE
+                    }
                 }
             }
 
@@ -124,6 +138,12 @@ class FoodFragment : Fragment() {
                             progressBar.visibility = View.GONE
                             adapter.setList(it)
                             recyclerView.adapter = adapter
+
+                            if (adapter.itemCount == 0) {
+                                tvEmpty.visibility = View.VISIBLE
+                            } else {
+                                tvEmpty.visibility = View.GONE
+                            }
                         }
                     } else {
                         viewModel.postSearch(query).observe(viewLifecycleOwner) {
@@ -131,6 +151,12 @@ class FoodFragment : Fragment() {
                             progressBar.visibility = View.GONE
                             adapter.setList(list)
                             recyclerView.adapter = adapter
+
+                            if (adapter.itemCount == 0) {
+                                tvEmpty.visibility = View.VISIBLE
+                            } else {
+                                tvEmpty.visibility = View.GONE
+                            }
                         }
                     }
                 } else {
@@ -139,6 +165,12 @@ class FoodFragment : Fragment() {
                             progressBar.visibility = View.GONE
                             adapter.setList(it)
                             recyclerView.adapter = adapter
+
+                            if (adapter.itemCount == 0) {
+                                tvEmpty.visibility = View.VISIBLE
+                            } else {
+                                tvEmpty.visibility = View.GONE
+                            }
                         }
                     } else {
                         viewModel.getFoods().observe(viewLifecycleOwner) {
@@ -146,6 +178,12 @@ class FoodFragment : Fragment() {
                             progressBar.visibility = View.GONE
                             adapter.setList(list)
                             recyclerView.adapter = adapter
+
+                            if (adapter.itemCount == 0) {
+                                tvEmpty.visibility = View.VISIBLE
+                            } else {
+                                tvEmpty.visibility = View.GONE
+                            }
                         }
                     }
                 }

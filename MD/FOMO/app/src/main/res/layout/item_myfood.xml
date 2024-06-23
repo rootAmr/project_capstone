@@ -34,7 +34,8 @@
                     android:id="@+id/iv_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="image" />
+                    android:contentDescription="image"
+                    android:scaleType="centerCrop"/>
 
             </androidx.cardview.widget.CardView>
 

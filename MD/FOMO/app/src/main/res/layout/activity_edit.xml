@@ -70,7 +70,8 @@
             android:fontFamily="@font/poppins"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:enabled="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--    <EditText-->

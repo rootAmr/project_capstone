@@ -29,7 +29,7 @@ class BookmarkFragment : Fragment(), MyFoodAdapter.OnDeleteClickCallback {
     private lateinit var adapter: MyFoodAdapter
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
-    private var bookmarkId: List<Int?> = emptyList()
+    private var foodId: List<Int?> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +56,8 @@ class BookmarkFragment : Fragment(), MyFoodAdapter.OnDeleteClickCallback {
                     it.putExtra("extra_steps", data?.steps)
                     it.putExtra("extra_userid", data?.userId)
                     it.putExtra("extra_id", data?.id)
+                    it.putExtra("extra_rating", data?.rating)
+                    it.putExtra("extra_category", data?.category)
                     startActivity(it)
                 }
             }
@@ -70,8 +72,7 @@ class BookmarkFragment : Fragment(), MyFoodAdapter.OnDeleteClickCallback {
 
                 viewModel.getBookmarks().observe(viewLifecycleOwner) {
                     val myBookmarks = it.filter { data -> data?.userId == id }
-                    bookmarkId = myBookmarks.map { data -> data?.id }
-                    val foodId = myBookmarks.map { data -> data?.foodId }
+                    foodId = myBookmarks.map { data -> data?.foodId }
 
                     viewModel.getFoods().observe(viewLifecycleOwner) { foods ->
                         val bookmarkFoods = foods.filter { data -> data?.id in foodId }
@@ -105,7 +106,7 @@ class BookmarkFragment : Fragment(), MyFoodAdapter.OnDeleteClickCallback {
             .setCancelable(true)
             .setPositiveButton("IYA") { _, _ ->
                 val progressDialog = ProgressDialog.show(requireContext(), null, "Harap tunggu")
-                viewModel.deleteBookmark(bookmarkId[position]!!).observe(viewLifecycleOwner) {
+                viewModel.deleteBookmark(foodId[position]!!).observe(viewLifecycleOwner) {
                     progressDialog.dismiss()
 
                     if (it == "Delete bookmark success") {
